@@ -4,6 +4,8 @@ package sample.cafekiosk.spring.domain;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
+import java.util.List;
+
 @Getter
 @RequiredArgsConstructor
 public enum ProductType {   // 제품 타입
@@ -14,4 +16,7 @@ public enum ProductType {   // 제품 타입
 
     private final String text;
 
+    public static boolean containsStockType(ProductType type) {
+        return List.of(BOTTLE, BAKERY).contains(type);
+    }
 }
