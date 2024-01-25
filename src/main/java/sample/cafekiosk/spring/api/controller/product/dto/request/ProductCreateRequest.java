@@ -2,11 +2,13 @@ package sample.cafekiosk.spring.api.controller.product.dto.request;
 
 import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import sample.cafekiosk.spring.domain.Product;
 import sample.cafekiosk.spring.domain.ProductSellingStatus;
 import sample.cafekiosk.spring.domain.ProductType;
 
 @Getter
+@NoArgsConstructor
 public class ProductCreateRequest {
 
     private ProductType type;
