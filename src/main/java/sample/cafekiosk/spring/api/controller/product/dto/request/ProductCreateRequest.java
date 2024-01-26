@@ -1,5 +1,8 @@
 package sample.cafekiosk.spring.api.controller.product.dto.request;
 
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Positive;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -9,11 +12,18 @@ import sample.cafekiosk.spring.domain.ProductType;
 
 @Getter
 @NoArgsConstructor
-public class ProductCreateRequest {
+public cProductCreateRequest {
 
+    @NotNull
     private ProductType type;
+
+    @NotNull
     private ProductSellingStatus sellingStatus;
+
+    @NotBlank
     private String name;
+
+    @Positive
     private int price;
 
     @Builder
