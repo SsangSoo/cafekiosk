@@ -14,6 +14,7 @@ import sample.cafekiosk.spring.domain.Product;
 import sample.cafekiosk.spring.domain.ProductRepository;
 import sample.cafekiosk.spring.domain.ProductType;
 import sample.cafekiosk.spring.domain.order.OrderRepository;
+import sample.cafekiosk.spring.domain.order.OrderStatus;
 import sample.cafekiosk.spring.domain.orderproduct.OrderProductRepository;
 import sample.cafekiosk.spring.domain.stock.Stock;
 import sample.cafekiosk.spring.domain.stock.StockRepository;
@@ -71,7 +72,7 @@ class OrderServiceTest {
                 .build();
 
         // when
-        OrderResponse orderResponse = orderService.createOrder(request, registeredDateTime);
+        OrderResponse orderResponse = orderService.createOrder(request.toServiceRequest(), registeredDateTime);
 
         // then
         assertThat(orderResponse.getId()).isNotNull();
@@ -104,7 +105,7 @@ class OrderServiceTest {
                 .build();
 
         // when
-        OrderResponse orderResponse = orderService.createOrder(request, registeredDateTime);
+        OrderResponse orderResponse = orderService.createOrder(request.toServiceRequest(), registeredDateTime);
 
         // then
         assertThat(orderResponse.getId()).isNotNull();
@@ -140,7 +141,7 @@ class OrderServiceTest {
                 .build();
 
         // when
-        OrderResponse orderResponse = orderService.createOrder(request, registeredDateTime);
+        OrderResponse orderResponse = orderService.createOrder(request.toServiceRequest(), registeredDateTime);
 
         // then
         assertThat(orderResponse.getId()).isNotNull();
@@ -187,10 +188,38 @@ class OrderServiceTest {
                 .build();
 
         // when // then
-        assertThatThrownBy(() -> orderService.createOrder(request, registeredDateTime))
+        assertThatThrownBy(() -> orderService.createOrder(request.toServiceRequest(), registeredDateTime))
                 .isInstanceOf(IllegalArgumentException.class)
                 .hasMessage("재고가 부족한 상품이 있습니다.");
     }
+
+    @Test
+    @DisplayName("주문에 대한 결제를 완료한다.")
+    void completeOrderTest() {
+        // given
+        LocalDateTime registeredDateTime = LocalDateTime.now();
+
+        Product product1 = createProduct(HANDMADE, "001", 1000);
+        Product product2 = createProduct(HANDMADE, "002", 3000);
+        Product product3 = createProduct(HANDMADE, "003", 5000);
+
+        productRepository.saveAll(List.of(product1, product2, product3));
+
+        OrderCreateRequest request = OrderCreateRequest.builder()
+                .productNumbers(List.of("001", "002"))
+                .build();
+
+        OrderResponse orderResponse = orderService.createOrder(request.toServiceRequest(), registeredDateTime);
+
+        // when
+        OrderResponse paymentsCompleteOrderResponse = orderService.completeOrder(orderResponse.getId());
+
+        // then
+        assertThat(orderResponse.getOrderStatus()).isEqualByComparingTo(OrderStatus.INIT);
+        assertThat(paymentsCompleteOrderResponse.getId()).isEqualTo(orderResponse.getId());
+        assertThat(paymentsCompleteOrderResponse.getOrderStatus()).isEqualByComparingTo(OrderStatus.PAYMENT_COMPLETED);
+    }
+
 
     private Product createProduct(ProductType type, String productNumber, int price) {
         return Product.builder()
@@ -201,4 +230,7 @@ class OrderServiceTest {
                 .name("메뉴 이름") // 이름이 같아도 상관없음.
                 .build();
     }
+
+
+
 }

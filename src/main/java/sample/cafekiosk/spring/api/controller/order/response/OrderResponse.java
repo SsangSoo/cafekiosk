@@ -4,6 +4,7 @@ import lombok.Builder;
 import lombok.Getter;
 import sample.cafekiosk.spring.api.service.product.response.ProductResponse;
 import sample.cafekiosk.spring.domain.order.Order;
+import sample.cafekiosk.spring.domain.order.OrderStatus;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -16,14 +17,16 @@ public class OrderResponse {
     private int totalPrice;
     private LocalDateTime registeredDateTime;
     private List<ProductResponse> products;
+    private OrderStatus orderStatus;
 
 
     @Builder
-    public OrderResponse(Long id, int totalPrice, LocalDateTime registeredDateTime, List<ProductResponse> products) {
+    public OrderResponse(Long id, int totalPrice, LocalDateTime registeredDateTime, List<ProductResponse> products, OrderStatus orderStatus) {
         this.id = id;
         this.totalPrice = totalPrice;
         this.registeredDateTime = registeredDateTime;
         this.products = products;
+        this.orderStatus = orderStatus;
     }
 
     public static OrderResponse of(Order order) {
@@ -34,6 +37,7 @@ public class OrderResponse {
                 .products(order.getOrderProducts().stream()
                         .map(orderProduct -> ProductResponse.of(orderProduct.getProduct()))
                         .collect(Collectors.toList()))
+                .orderStatus(order.getOrderStatus())
                 .build();
     }
 }

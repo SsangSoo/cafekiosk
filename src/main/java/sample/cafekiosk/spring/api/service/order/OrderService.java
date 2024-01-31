@@ -18,6 +18,7 @@ import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.stream.Collector;
 import java.util.stream.Collectors;
 
@@ -98,4 +99,10 @@ public class OrderService {
                 .collect(Collectors.groupingBy(p -> p, Collectors.counting()));
     }
 
+    public OrderResponse completeOrder(Long orderId) {
+        Optional<Order> findByIdOrder = orderRepository.findById(orderId);
+        Order order = findByIdOrder.get();
+        order.completeOrderState();
+        return OrderResponse.of(order);
+    }
 }
