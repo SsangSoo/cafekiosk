@@ -4,6 +4,7 @@ import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
@@ -71,6 +72,10 @@ class OrderStatisticsServiceTest {
         Order order2 = createPaymentCompletedOrder(now, products);
         Order order3 = createPaymentCompletedOrder(LocalDateTime.of(2024,2,1,23,59,59), products);
         Order order4 = createPaymentCompletedOrder(LocalDateTime.of(2024,2,2,0,0), products);
+
+        Mockito.when(mailSendClient.sendMail(Mockito.anyString(), Mockito.anyString(), Mockito.anyString(), Mockito.anyString()))
+                .thenReturn(true);
+
 
         // when
         boolean result = orderStatisticsService.sendOrderStatisticsMail(LocalDate.of(2024,2,1), "test@test.com");
