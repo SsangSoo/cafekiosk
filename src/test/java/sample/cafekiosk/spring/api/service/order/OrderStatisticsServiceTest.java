@@ -90,6 +90,9 @@ class OrderStatisticsServiceTest {
 
     }
 
+
+
+
     private Order createPaymentCompletedOrder(LocalDateTime now, List<Product> products) {
         Order order = Order.builder()
                 .products(products)
