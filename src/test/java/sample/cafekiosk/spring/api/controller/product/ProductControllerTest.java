@@ -8,6 +8,7 @@ import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
+import sample.cafekiosk.spring.ControllerTestSupport;
 import sample.cafekiosk.spring.api.controller.product.request.ProductCreateRequest;
 import sample.cafekiosk.spring.api.service.product.ProductService;
 import sample.cafekiosk.spring.api.service.product.response.ProductResponse;
@@ -21,17 +22,8 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
-@WebMvcTest(controllers = ProductController.class) // 컨트롤러를 테스트하기 위해 컨트롤러 관련 빈들만 올릴 수 있는 가벼운 애너테이션이다. 테스트 하고 하자는 컨트롤러를 명시해준다.
-class ProductControllerTest {
-
-    @Autowired
-    private MockMvc mockMvc; // 서비스 Layer 하위로는 Mocking처리를 할 것이고, 그를 도와주는 프레임워크로 MockMvc가 있다.
-
-    @MockBean   // 스프링 컨테이너에 Mock 객체를 넣어주는 역할을 한다.
-    private ProductService productService;  // MockBean을 넣어주지 않으면, @WebMvcTest 를 사용할 때 Service 클래스가 없다고 나올 것이다.
-
-    @Autowired
-    private ObjectMapper objectMapper;
+//@WebMvcTest(controllers = ProductController.class) // 컨트롤러를 테스트하기 위해 컨트롤러 관련 빈들만 올릴 수 있는 가벼운 애너테이션이다. 테스트 하고 하자는 컨트롤러를 명시해준다.
+class ProductControllerTest extends ControllerTestSupport {
 
     @Test
     @DisplayName("신규 상품을 등록한다.")

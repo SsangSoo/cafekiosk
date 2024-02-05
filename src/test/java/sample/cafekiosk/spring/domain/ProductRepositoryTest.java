@@ -5,6 +5,8 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.test.context.ActiveProfiles;
+import org.springframework.transaction.annotation.Transactional;
+import sample.cafekiosk.spring.IntegrationTestSupport;
 
 import java.util.List;
 
@@ -12,9 +14,10 @@ import static org.assertj.core.api.Assertions.*;
 import static sample.cafekiosk.spring.domain.ProductSellingStatus.*;
 import static sample.cafekiosk.spring.domain.ProductType.*;
 
-@ActiveProfiles("test")
-@DataJpaTest
-class ProductRepositoryTest {
+//@ActiveProfiles("test")
+//@DataJpaTest
+@Transactional
+class ProductRepositoryTest extends IntegrationTestSupport {
 
     @Autowired
     private ProductRepository productRepository;

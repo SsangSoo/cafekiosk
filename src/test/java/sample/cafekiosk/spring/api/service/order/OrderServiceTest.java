@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.transaction.annotation.Transactional;
+import sample.cafekiosk.spring.IntegrationTestSupport;
 import sample.cafekiosk.spring.api.controller.order.request.OrderCreateRequest;
 import sample.cafekiosk.spring.api.controller.order.response.OrderResponse;
 import sample.cafekiosk.spring.domain.Product;
@@ -27,10 +28,7 @@ import static org.assertj.core.api.AssertionsForClassTypes.tuple;
 import static sample.cafekiosk.spring.domain.ProductSellingStatus.*;
 import static sample.cafekiosk.spring.domain.ProductType.*;
 
-@ActiveProfiles("test")
-@SpringBootTest
-//@Transactional
-class OrderServiceTest {
+class OrderServiceTest extends IntegrationTestSupport {
 
     @Autowired
     private OrderService orderService;
@@ -49,9 +47,15 @@ class OrderServiceTest {
 
     @AfterEach
     void tearDown() {
-        orderProductRepository.deleteAllInBatch();
-        productRepository.deleteAllInBatch();
-        orderRepository.deleteAllInBatch();
+//        orderProductRepository.deleteAllInBatch();
+//        productRepository.deleteAllInBatch();
+//        orderRepository.deleteAllInBatch();
+
+        orderProductRepository.deleteAll();
+        productRepository.deleteAll();
+        orderRepository.deleteAll();
+
+
         stockRepository.deleteAllInBatch();
     }
 
